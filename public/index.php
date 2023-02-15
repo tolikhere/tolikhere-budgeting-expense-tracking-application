@@ -11,4 +11,19 @@ define('FILES_PATH', $root . 'transaction_files' . DIRECTORY_SEPARATOR);
 define('VIEWS_PATH', $root . 'views' . DIRECTORY_SEPARATOR);
 
 require_once APP_PATH . 'app.php';
+require_once APP_PATH . 'helpers.php';
+
+$files = getTransactionFiles(FILES_PATH);
+
+$transactions = [];
+foreach($files as $file) {
+    $transactions = array_merge($transactions, getTransactions($file, 'extractTransaction'));
+}
+//echo '<pre>';
+//var_dump($transactions);
+//echo '</pre>';
+
+$totals = calculateTotals($transactions);
+
 require_once VIEWS_PATH . 'transactions.php';
+
